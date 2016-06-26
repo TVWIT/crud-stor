@@ -1,0 +1,35 @@
+{
+  "name": "crud-stor",
+  "version": "0.0.0",
+  "description": "Observable model with crud operations",
+  "main": "index.js",
+  "directories": {
+    "example": "example"
+  },
+  "dependencies": {
+    "observ": "^0.2.0",
+    "xtend": "^4.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nichoth/crud-stor.git"
+  },
+  "keywords": [
+    "crud",
+    "model",
+    "observ",
+    "observable",
+    "store",
+    "state"
+  ],
+  "author": "Nick Thomas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nichoth/crud-stor/issues"
+  },
+  "homepage": "https://github.com/nichoth/crud-stor#readme"
+}
