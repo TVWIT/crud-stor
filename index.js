@@ -103,7 +103,7 @@ function CrudStore (opts, api) {
 }
 
 CrudStore.Parse = function (state, parser) {
-    var obs = observ(state());
+    var obs = observ(parser(state()));
     state(function onChange (data) {
         obs.set(parser(data));
     });
