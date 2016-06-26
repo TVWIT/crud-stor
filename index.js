@@ -62,7 +62,6 @@ function CrudStore (opts, api) {
                     return handleErr(err, cb);
                 }
                 reset(resp.data);
-                console.log(args, cb);
                 cb(null, resp);
             });
 
