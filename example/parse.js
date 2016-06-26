@@ -1,5 +1,5 @@
 var Store = require('../');
-var store = require('./');
+var store = Store({}, require('./mock-api'));
 var xtend = require('xtend');
 
 // return a new observable with parsed data
@@ -11,6 +11,7 @@ function parser (state) {
     });
 }
 
+console.log(parsed());
 parsed(console.log.bind(console, 'parsed'));
 
-store.reset([ { id: 'abc', example: 'abc' } ]);
+// store.reset([ { id: 'abc', example: 'abc' } ]);

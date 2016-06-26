@@ -16,14 +16,6 @@ function CrudStore (opts, api) {
         return cb(err);
     }
 
-    function handleArgs (args, cb) {
-        if (typeof args === 'function') {
-            cb = args;
-            args = {};
-        }
-        cb = cb || function () {}
-    }
-
     function set (data) {
         var d = {};
         d[data[opts.id]] = data;
@@ -45,7 +37,9 @@ function CrudStore (opts, api) {
     }
 
     function addEdit (fn, args, cb) {
-        handleArgs(args, cb);
+        args = args || {};
+        cb = cb || function () {};
+        cb = typeof args === 'function' ? args : cb;
         state.set(xtend(state(), { isResolving: true }));
 
         fn(args, function (err, resp) {
@@ -59,22 +53,28 @@ function CrudStore (opts, api) {
 
     var actions = {
         get: function (args, cb) {
-            handleArgs(args, cb);
+            args = args || {};
+            cb = cb || function () {};
+            cb = typeof args === 'function' ? args : cb;
             state.set(xtend(state(), { isResolving: true }));
             api.get(args, function (err, resp) {
                 if (err) {
                     return handleErr(err, cb);
                 }
                 reset(resp.data);
+                console.log(args, cb);
                 cb(null, resp);
             });
+
         },
 
         add: addEdit.bind(null, api.add),
         edit: addEdit.bind(null, api.edit),
 
         delete: function (args, cb) {
-            handleArgs(args, cb);
+            args = args || {};
+            cb = cb || function() {};
+            cb = typeof args === 'function' ? args : cb;
             state.set(xtend(state(), { isResolving: true }));
             api.delete(args, function (err, resp) {
                 if (err) {
