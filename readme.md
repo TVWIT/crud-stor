@@ -12,9 +12,13 @@ Minimal model with crud operations.
 
 ```js
 var Store = require('crud-stor');
+
+// api is an object with get, add, edit, delete functions
 var api = require('./mock-api');
-var store = Store({}, api);
-var xtend = require('xtend');
+
+var store = Store({
+    id: 'id'  // key by which to map the data. Default is 'id'.
+}, api);
 
 // store.state is an instance of `observ`
 store.state(function onChange (state) {
@@ -31,9 +35,10 @@ store.actions.edit({}, cb);
 store.actions.delete({ id: 2 }, cb);
 
 // set one item to the given object, or add it if the id does not exist
+// emits a change event
 store.set({ id: '123', example: 'test' });
 
-// set all items
+// set all items and emit a change event
 store.reset([ { id: 123, example: '123' }, { id: 1234, example: '1234' } ]);
 ```
 
@@ -44,16 +49,17 @@ var Store = require('crud-stor');
 var store = require('./');
 var xtend = require('xtend');
 
-// return a new observable with parsed data
+// return a new observable that emits parsed data
 var parsed = Store.Parse(store.state, parser);
 
 function parser (state) {
-    // array instead of object
+    // return array instead of object
     return xtend(state, {
         data: Object.keys(state.data).map(k => state.data[k])
     });
 }
 
+// listen for changes
 parsed(console.log.bind(console, 'parsed'));
 
 store.reset([ { id: 'abc', example: 'abc' } ]);
@@ -88,8 +94,9 @@ Set one item.
 Reset all the items.
 
 ### Store.Parse(observable, function parser)
-Return a new `observ` that emits the return value from `parser`. Parser is like:
+Return a new `observ` that emits the return value from `parser`. Parser is a 
+function that takes the state object emitted by `observable`:
 ```js
-(state) => ({ isResolving: false, data: '...' })
+(state) => (/* ... */)
 ```
 
