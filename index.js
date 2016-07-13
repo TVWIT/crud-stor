@@ -106,6 +106,7 @@ function CrudStore (opts, api) {
         state: state,
         actions: actions,
         set: set,
+        remove: remove,
         reset: reset
     };
 }
