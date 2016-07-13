@@ -11,7 +11,6 @@ function parser (state) {
     });
 }
 
-console.log(parsed());
-parsed(console.log.bind(console, 'parsed'));
+// listen to changes
+parsed(console.log.bind(console, 'parsed data'));
 
-// store.reset([ { id: 'abc', example: 'abc' } ]);

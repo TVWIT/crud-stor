@@ -42,28 +42,51 @@ store.set({ id: '123', example: 'test' });
 store.reset([ { id: 123, example: '123' }, { id: 1234, example: '1234' } ]);
 ```
 
+API functions are any asynchronous function that takes an options arg and
+a node style callback.
+
+```js
+// mock-api.js
+var nextTick = process.nextTick.bind(process);
+
+module.exports = {
+    get: function (opts, cb) {
+        nextTick(cb.bind(null, null, { data: [{ id: 1, example: 'test' }] }));
+    },
+
+    add: function (opts, cb) {
+        nextTick(cb.bind(null, null, { data: { id: 2, example: 'test2' } }));
+    },
+
+    edit: function (opts, cb) {
+        nextTick(cb.bind(null, null, { data: { id: 2, example: 'edited' } }));
+    },
+
+    delete: function (opts, cb) {
+        nextTick(cb.bind(null, null, true));
+    }
+};
+```
+
+
 Parse data:
 
 ```js
-var Store = require('crud-stor');
-var store = require('./');
+var Store = require('../');
+var store = Store({}, require('./mock-api'));
 var xtend = require('xtend');
 
-// return a new observable that emits parsed data
+// return a new observable with parsed data
 var parsed = Store.Parse(store.state, parser);
 
 function parser (state) {
-    // return array instead of object
     return xtend(state, {
         data: Object.keys(state.data).map(k => state.data[k])
     });
 }
 
-// listen for changes
-parsed(console.log.bind(console, 'parsed'));
-
-store.reset([ { id: 'abc', example: 'abc' } ]);
-// { isResolving: false, data: [ { id: 'abc', example: 'abc' } ] }
+// listen to changes
+parsed(console.log.bind(console, 'parsed data'));
 ```
 
 ## api
