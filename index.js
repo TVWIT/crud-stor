@@ -26,6 +26,15 @@ function CrudStore (opts, api) {
         }));
     }
 
+    function remove (data) {
+        var s = state();
+        delete s.data[data[opts.id]];
+        state.set({
+            isResolving: false,
+            data: s.data
+        });
+    }
+
     function reset (data) {
         state.set(xtend(state(), {
             isResolving: false,
